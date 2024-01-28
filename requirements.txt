@@ -1,0 +1,7 @@
+python-dotenv
+langchain
+openai
+Flask
+flask_cors
+nltk
+pymongo
