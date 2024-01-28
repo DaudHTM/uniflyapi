@@ -1,4 +1,4 @@
-from dotenv import find_dotenv, load_dotenv
+
 import os
 import openai
 from langchain.chains import RetrievalQA
@@ -18,22 +18,21 @@ from nltk.corpus import stopwords
 
 import pymongo
 #load environment variables
-load_dotenv(find_dotenv())
 
-OPENAI_API_KEY = os.environ["OPEN_AI_KEY"]
-OPENAI_DEPLOYMENT_ENDPOINT = os.environ["OPENAI_DEPLOYMENT_ENDPOINT"]
-OPENAI_DEPLOYMENT_NAME = os.environ["OPENAI_DEPLOYMENT_NAME"]
-OPENAI_MODEL_NAME = os.environ["OPENAI_MODEL_NAME"]
-OPENAI_DEPLOYMENT_VERSION = os.environ["OPENAI_DEPLOYMENT_VERSION"]
-
-OPENAI_ADA_EMBEDDING_DEPLOYMENT_NAME = os.environ["OPENAI_ADA_EMBEDDING_DEPLOYMENT_NAME"]
-OPENAI_ADA_EMBEDDING_MODEL_NAME = os.environ["OPENAI_ADA_EMBEDDING_MODEL_NAME"]
 
 # Azure OpenAI settings
+OPENAI_DEPLOYMENT_ENDPOINT = "https://uniflytoken2.openai.azure.com/"
+OPENAI_API_KEY = "eb8e3eeb21f347908c931d74b6b818cf"
+OPENAI_DEPLOYMENT_VERSION = "2023-05-15"
+OPENAI_DEPLOYMENT_NAME = "uniflyy"
+OPENAI_MODEL_NAME = "gpt-35-turbo"
 
-mongo_username = os.environ["MONGO_USERNAME"]
-mongo_password = os.environ["MONGO_PASSWORD"]
-mongo_database_name = os.environ["MONGO_DATABASE_NAME"]
+OPENAI_ADA_EMBEDDING_DEPLOYMENT_NAME = "embed"
+OPENAI_ADA_EMBEDDING_MODEL_NAME = "text-embedding-ada-002"
+
+mongo_username = "uniflydbadmin"
+mongo_password = "uniflydbpassword"
+mongo_database_name = "UniflyDB"
 
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
