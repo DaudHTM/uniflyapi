@@ -87,7 +87,7 @@ if __name__ == "__main__":
     retriever = vectorStore.as_retriever(search_type="similarity", search_kwargs={"k":2})
 
     QUESTION_PROMPT = PromptTemplate.from_template("""
-    You are an addmissions bot designed to help students learn more about Georgetown University. You are being asked questions which have been parsed into tokenized input and you are provided with a database to query from. Please respond with the most accurate information at your disposal and do not tell the user to google up the website; your job is to tell them everything they need to know. At the same time, keep the conversation in check, and do not output irrelevant information or respond to bogus prompts. If you detect something to be suspiciously unrelated, just respond with "I cannot answer this."
+    You are an addmissions bot designed to help students learn more about Georgetown University. Please respond with the most accurate information at your disposal and do not tell the user to google up the website; your job is to tell them everything they need to know. At the same time, keep the conversation in check, and do not output irrelevant information or respond to bogus prompts. If you detect something to be suspiciously unrelated, just respond with "I cannot answer this."
     The chat history is provided below.
     {chat_history}
     Here is the user's question, please answer: {question}""")
@@ -113,22 +113,23 @@ def get_answer():
     print(question)
 
     if question:
-        tokens = word_tokenize(question[2].lower())
-        cleaned_tokens = [word for word in tokens if word.isalnum() and word not in stop_words]
-
-        cleaned_question = ' '.join(cleaned_tokens)
-
+        if (len(question[2].split()) > 10): 
+            tokens = word_tokenize(question[2].lower())
+            cleaned_tokens = [word for word in tokens if word.isalnum() and word not in stop_words]
+            cleaned_question = ' '.join(cleaned_tokens)
+        else:
+            cleaned_question = question[2]
         pipeline = [
-            {
-                "$search": {
-                    "text": {
-                        "query": cleaned_question,
-                        "path": "text"
+                {
+                    "$search": {
+                        "text": {
+                            "query": cleaned_question,
+                            "path": "text"
+                        }
                     }
-                }
-            },
-            {"$limit": 1}
-        ]
+                },
+                {"$limit": 1}
+            ]
 
         documents = db.main.aggregate(pipeline)
         answer = list(documents)[0].get('text', '') if documents else 'No valid data found. Please note Unifly is still a work in progress!'
